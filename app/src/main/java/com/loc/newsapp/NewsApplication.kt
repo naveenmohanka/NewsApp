@@ -8,6 +8,7 @@ import com.loc.newsapp.domain.usecases.DeleteArticle
 import com.loc.newsapp.domain.usecases.GetArticle
 import com.loc.newsapp.domain.usecases.GetSavedArticles
 import com.loc.newsapp.domain.usecases.GetTopHeadlines
+import com.loc.newsapp.domain.usecases.IsArticleSaved
 import com.loc.newsapp.domain.usecases.NewsUseCases
 import com.loc.newsapp.domain.usecases.SaveArticle
 import com.loc.newsapp.domain.usecases.SearchNews
@@ -36,6 +37,7 @@ class AppContainer(application: Application) {
         getArticle = GetArticle(repository),
         getSavedArticles = GetSavedArticles(repository),
         saveArticle = SaveArticle(repository),
-        deleteArticle = DeleteArticle(repository)
+        deleteArticle = DeleteArticle(repository),
+        isArticleSaved = IsArticleSaved(repository)
     )
 }

@@ -6,6 +6,7 @@ import com.loc.newsapp.domain.usecases.DeleteArticle
 import com.loc.newsapp.domain.usecases.GetArticle
 import com.loc.newsapp.domain.usecases.GetSavedArticles
 import com.loc.newsapp.domain.usecases.GetTopHeadlines
+import com.loc.newsapp.domain.usecases.IsArticleSaved
 import com.loc.newsapp.domain.usecases.NewsUseCases
 import com.loc.newsapp.domain.usecases.SaveArticle
 import com.loc.newsapp.domain.usecases.SearchNews
@@ -38,7 +39,8 @@ class HomeViewModelTest {
             getArticle = GetArticle(fakeRepository),
             getSavedArticles = GetSavedArticles(fakeRepository),
             saveArticle = SaveArticle(fakeRepository),
-            deleteArticle = DeleteArticle(fakeRepository)
+            deleteArticle = DeleteArticle(fakeRepository),
+            isArticleSaved = IsArticleSaved(fakeRepository)
         )
     }
 

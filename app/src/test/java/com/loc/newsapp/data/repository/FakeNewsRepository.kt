@@ -3,12 +3,15 @@ package com.loc.newsapp.data.repository
 import com.loc.newsapp.domain.model.Article
 import com.loc.newsapp.domain.repository.NewsRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 
 class FakeNewsRepository : NewsRepository {
     var shouldReturnError: Boolean = false
     val articles = mutableListOf<Article>()
-    val savedArticles = mutableListOf<Article>()
+    private val _savedArticles = MutableStateFlow<List<Article>>(emptyList())
+    val savedArticles = _savedArticles.asStateFlow()
 
     override suspend fun getTopHeadlines(): Result<List<Article>> {
         return if (shouldReturnError) {
@@ -27,22 +30,29 @@ class FakeNewsRepository : NewsRepository {
     }
 
     override fun getSavedArticles(): Flow<List<Article>> {
-        return flowOf(savedArticles)
+        return _savedArticles.asStateFlow()
     }
 
     override suspend fun saveArticle(article: Article) {
-        savedArticles.add(article)
+        val currentList = _savedArticles.value.toMutableList()
+        val index = currentList.indexOfFirst { it.url == article.url }
+        if (index >= 0) {
+            currentList[index] = article
+        } else {
+            currentList.add(article)
+        }
+        _savedArticles.value = currentList
     }
 
     override suspend fun deleteArticle(article: Article) {
-        savedArticles.remove(article)
+        _savedArticles.value = _savedArticles.value.filterNot { it.url == article.url }
     }
 
     override suspend fun getArticle(url: String): Article? {
-        return savedArticles.find { it.url == url }
+        return _savedArticles.value.find { it.url == url }
     }
 
     override fun isArticleSaved(url: String): Flow<Boolean> {
-        return flowOf(savedArticles.any { it.url == url })
+        return _savedArticles.map { list -> list.any { it.url == url } }
     }
 }

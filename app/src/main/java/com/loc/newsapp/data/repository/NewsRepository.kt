@@ -3,8 +3,8 @@ package com.loc.newsapp.data.repository
 import com.loc.newsapp.data.local.ArticleDao
 import com.loc.newsapp.data.local.toArticle
 import com.loc.newsapp.data.local.toEntity
-import com.loc.newsapp.data.remote.ArticleDto
 import com.loc.newsapp.data.remote.NewsApi
+import com.loc.newsapp.data.remote.toArticle
 import com.loc.newsapp.domain.model.Article
 import com.loc.newsapp.domain.repository.NewsRepository
 import kotlinx.coroutines.flow.Flow
@@ -40,6 +40,10 @@ class NewsRepositoryImpl(
         articleDao.delete(article.toEntity())
     }
 
+    override suspend fun getArticle(url: String): Article? {
+        return articleDao.getArticle(url)?.toArticle()
+    }
+
     override fun isArticleSaved(url: String): Flow<Boolean> {
         return articleDao.isArticleSaved(url)
     }
@@ -53,19 +57,5 @@ class NewsRepositoryImpl(
         } catch (e: Exception) {
             Result.failure(e)
         }
-    }
-
-    private fun ArticleDto.toArticle(): Article? {
-        val articleUrl = url?.takeIf { it.isNotBlank() } ?: return null
-        val articleTitle = title?.takeIf { it.isNotBlank() && it != "[Removed]" } ?: return null
-        return Article(
-            title = articleTitle,
-            description = description,
-            content = content,
-            url = articleUrl,
-            imageUrl = urlToImage,
-            publishedAt = publishedAt,
-            sourceName = source?.name
-        )
     }
 }

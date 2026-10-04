@@ -46,7 +46,8 @@ fun DetailsScreen(
 
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val isSaved by newsUseCases.isArticleSaved(article.url).collectAsState(initial = false)
+    val savedArticles by newsUseCases.getSavedArticles().collectAsState(initial = emptyList())
+    val isSaved = savedArticles.any { it.url == article.url }
 
     Scaffold(
         topBar = {

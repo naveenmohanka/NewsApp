@@ -11,6 +11,9 @@ interface ArticleDao {
     @Query("SELECT * FROM articles ORDER BY publishedAt DESC")
     fun getArticles(): Flow<List<ArticleEntity>>
 
+    @Query("SELECT * FROM articles WHERE url = :url")
+    suspend fun getArticle(url: String): ArticleEntity?
+
     @Query("SELECT EXISTS(SELECT 1 FROM articles WHERE url = :url)")
     fun isArticleSaved(url: String): Flow<Boolean>
 

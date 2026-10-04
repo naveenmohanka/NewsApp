@@ -9,5 +9,6 @@ interface NewsRepository {
     fun getSavedArticles(): Flow<List<Article>>
     suspend fun saveArticle(article: Article)
     suspend fun deleteArticle(article: Article)
+    suspend fun getArticle(url: String): Article?
     fun isArticleSaved(url: String): Flow<Boolean>
 }

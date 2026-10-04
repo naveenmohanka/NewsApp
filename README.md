@@ -27,7 +27,7 @@ A modern Android application built with Kotlin and Jetpack Compose that delivers
 
 ## Architecture
 
-The project follows Clean Architecture with unidirectional data flow:
+The project follows Clean Architecture, with dependencies pointing inward toward the domain layer:
 
 ```
 Presentation Layer  ──>  Domain Layer  <──  Data Layer
@@ -139,7 +139,7 @@ Select an emulator or connected Android device and click **Run** (`Shift + F10`)
 
 ## Testing
 
-Unit tests for ViewModels are written using JUnit 4 and `kotlinx-coroutines-test`, isolated with a fake repository (`FakeNewsRepository`).
+A ViewModel unit test is included using JUnit 4 and kotlinx-coroutines-test, with a fake repository (FakeNewsRepository).
 
 To run unit tests:
 
@@ -167,20 +167,6 @@ The APK is generated at:
 ```text
 app/build/outputs/apk/debug/app-debug.apk
 ```
-
-## Screenshots
-
-| Onboarding | Home |
-|---|---|
-| *Add screenshot* | *Add screenshot* |
-
-| Search | Details |
-|---|---|
-| *Add screenshot* | *Add screenshot* |
-
-| Bookmarks |
-|---|
-| *Add screenshot* |
 
 ## Git Workflow
 
